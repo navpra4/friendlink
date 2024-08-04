@@ -19,8 +19,10 @@ const PostEditor = () => {
             }),
             PlaceHolder.configure({
                 placeholder: "What's crack-a-lacking?"
-            })
-        ]
+            }),
+            
+        ],
+        immediatelyRender: false,
     })
 
     const input = editor?.getText({
@@ -44,7 +46,7 @@ const PostEditor = () => {
 
             <div className=" flex justify-end">
                 <Button
-                    onSubmit={onSubmit}
+                    onClick={onSubmit}
                     disabled = {!input.trim()}
                     className="min-w-20"
                 >
