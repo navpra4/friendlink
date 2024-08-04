@@ -8,9 +8,14 @@ import UserAvatar from "@/components/UserAvatar"
 import { useSession } from "@/app/(main)/SessionProvider"
 import { Button } from "@/components/ui/button"
 import "./styles.css"
+import { useSubmitPostMutation } from "./mutations"
+import { Loader2 } from "lucide-react"
 
 const PostEditor = () => {
-    const {user} = useSession()
+    const {user} = useSession();
+
+    const mutation = useSubmitPostMutation();
+
     const editor = useEditor({
         extensions:[
             StarterKit.configure({
@@ -29,9 +34,13 @@ const PostEditor = () => {
         blockSeparator:"\n",
     }) || "";
 
-    async function onSubmit() {
-        await submitPost(input)
-        editor?.commands.clearContent();
+    function onSubmit() {
+        mutation.mutate(input,{
+            onSuccess: ()=>{
+                editor?.commands.clearContent();
+            },
+        })
+        
     }
 
     return (
@@ -49,7 +58,8 @@ const PostEditor = () => {
                     onClick={onSubmit}
                     disabled = {!input.trim()}
                     className="min-w-20"
-                >
+                >   
+                    {mutation.isPending && <Loader2 className="mr-2 h-4 w-4 rounded-full"/>}
                     Post
                 </Button>
             </div>
