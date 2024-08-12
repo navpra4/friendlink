@@ -35,7 +35,10 @@ const PostEditor = () => {
     }) || "";
 
     function onSubmit() {
-        mutation.mutate(input,{
+        mutation.mutate({
+            content: input,
+            mediaIds: [],
+        },{
             onSuccess: ()=>{
                 editor?.commands.clearContent();
             },
